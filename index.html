@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: "en-US" }}">
+ 
+<head>
+ <meta charset="UTF-8">
+ <meta http-equiv="X-UA-Compatible" content="IE=edge">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+ <script async src="https://www.googletagmanager.com/gtag/js?id=UA-206370536-1"></script>
+ <script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'UA-206370536-1');
+ </script>
+ 
+ </head>
+ <!-- Loads <model-viewer> for modern browsers: -->
+ <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.js"></script>
+  
+ <script nomodule="" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+ <script src="{{ "/assets/js/scale.fix.js" | relative_url }}"></script>
+  <!-- The following libraries and polyfills are recommended to maximize browser support -->  
+  <!-- REQUIRED: Web Components polyfill to support Edge and Firefox < 63 -->
+  <script src="https://unpkg.com/@webcomponents/webcomponentsjs/webcomponents-loader.js"></script>
+
+  <!-- OPTIONAL: Intersection Observer polyfill for better performance in Safari and IE11 -->
+  <script src="https://unpkg.com/intersection-observer/intersection-observer.js"></script>
+
+  <!-- OPTIONAL: Resize Observer polyfill improves resize behavior in non-Chrome browsers -->
+  <script src="https://unpkg.com/resize-observer-polyfill/dist/ResizeObserver.js"></script>
+ 
+ <script>
+      function Sync(selector, audioSelector) {
+        var modelViewer = document.querySelector(selector);
+        var sound = document.querySelector(audioSelector);
+        var playRequest = document.querySelector("#overlay");
+
+   sound.addEventListener("timeupdate", () => {
+          modelViewer.currentTime = sound.currentTime;
+          console.log("modelViewer time: " + modelViewer.currentTime);
+        });
+
+   sound.addEventListener("pause", () => {
+          modelViewer.pause();
+        });
+
+   sound.addEventListener("play", () => {
+          modelViewer.play();
+
+   playRequest.classList.add("hide");
+        });
+
+   document.addEventListener("visibilitychange", () => {
+          if (document.visibilityState !== "visible") {
+            sound.pause();
+          }
+        });
+var promise = sound.play();
+        if (promise !== undefined) {
+          promise
+            .then(_ => {
+              console.log("Autoplay has worked");
+              playRequest.classList.add("hide");
+            })
+            .catch(error => {
+              // Show a "Play" button so that user can start playback.
+              console.log("Autoplay has not worked");
+
+   // show the modal dialogue to play this
+   playRequest.classList.remove("hide");
+            });
+        }
+
+   }  
+      function playNow() {
+        var playRequest = document.querySelector("#overlay");
+        playRequest.classList.add("hide");
+
+   var sound = document.querySelector("#sound");
+        sound.play();
+      }
+
+   function jumpTo(time) {
+        var sound = document.querySelector("#sound");
+        sound.currentTime = time;
+      }
+   </script>
+ 
+<script>
+/**
+* Function that registers a click on an outbound link in Analytics.
+* This function takes a valid URL string as an argument, and uses that URL string
+* as the event label. Setting the transport method to 'beacon' lets the hit be sent
+* using 'navigator.sendBeacon' in browser that support it.
+*/
+var getOutboundLink = function(url) {
+  gtag('event', 'click', {
+    'event_category': 'outbound',
+    'event_label': url,
+    'transport_type': 'beacon',
+    'event_callback': function(){document.location = url;}
+  });
+}
+</script>
+
+<style> 
+ 
+.container {
+ column-count: 2;
+ column-width: 250px;
+ column-gap: 10px;
+}
+  .card {
+  break-inside: avoid;
+  background-color: rgb(255, 255, 255);
+  border: 2px solid rgb(255, 255, 255);
+  padding: 10px;
+  margin: 0 0 1em 0;
+}
+}
+  .stack-top{
+   z-index: 9;
+}
+ .marginauto {
+    margin: 10px auto 10px;
+    display: block;
+}
+</style>
+
+<body>
+
+<!--<h1>The column-count Property</h1> -->
+<!--<p>The column-count property defines the number of columns an element is divided into:</p> -->
+
+<div class="container">
+    <div class="card">
+      <img class="marginauto" src="images/LincolnSM_Logo_LiveWork_blue.png" alt="Logo" style="width: auto; height: 100px"> 
+      <h2 style="text-align: center;" markdown="1"><b style="color:#0081ae;"><p style="font-family:calibri"> The Live-work lifestyle at one of Santa Monica’s most bustling intersections!</p></h2></b>
+    <div class="card">
+      <model-viewer camera-controls camera-orbit="-90deg 45deg 75%" id="reveal" loading="eager" src="Models/Lincoln Unit A_4.glb" ar="" ar-modes="scene-viewer webxr quick-look" ios-src="Models/usdz-lincoln_unit_a_4___1630105463932.usdz" alt="Lincoln SM" auto-rotate-delay="0" ar-scale="auto" camera-controls="" style="width: 100%; height: 600px" exposure="0.5"> <button slot="ar-button" style="background-color: rgb(255, 255, 255); border-radius: 8px; border: 1 px solid black; position: absolute; top: 20px; right: 20px; height: 40px; width: auto;">
+       👆 <strong>AR CLICK HERE</strong>
+  </button>
+</model-viewer>
+  </div>
+  
+</model-viewer>
+  </div>
+ 
+     <section class="attribution">
+        <div>
+          <!--<span>
+            <h1 style="text-align: center;" markdown="1"><p style="font-family:calibri"></p></h1>
+              <p align="center">
+              <span>
+              <audio controls autoplay loop id="sound">
+                <source src="Sound/?????.mp3"/>
+              </audio
+            ></span> 
+             </p>
+            </span> -->
+         </div>
+   </section>
+   <script>    
+        window.addEventListener("load", () => {
+          Sync("#model-viewer", "#sound");
+        });
+      </script>
+     
+   <div class="card">
+     <h2 style="text-align: center;" markdown="1"><p style="font-family:calibri"><b>EXPLORE OUR FLOORPLANS:</b><a href="https://www.thewestsidecollection.com/riva-santa-monica-ca/floorplans?utm_source=AVERtek&utm_medium=AR" onclick="getOutboundLink('https://www.thewestsidecollection.com/riva-santa-monica-ca/floorplans?utm_source=AVERtek&utm_medium=AR');return false;"><b style="color:#0081ae;"><b> HERE</b></b></h2></a></p></a></h2>
+     <h2 style="text-align: center;" markdown="1"><p style="font-family:calibri"><b>SPECIAL:</b><a href="mailto:LincolnSM.AVERtekSMLW.SaresRegis@aptleasing.info?Subject=Requesting VIP Tour Lincoln SM" onclick="getOutboundLink('mailto:LincolnSM.AVERtekSMLW.SaresRegis@aptleasing.info'); return false;"><b style="color:#0081ae;"><b> REQUEST VIP TOUR</b></h2></a></p></a>
+     <br>
+     <h2 style="text-align: center;" markdown="1"><p style="font-family:calibri"><a href="tel:+18333495305"><b style="color:#0081ae;">833-349-5305</a></b></b></p></h2>
+     <h2 style="text-align: center;" markdown="1"><b style="color:#000000;"><p style="font-family:calibri"> 1447 Lincoln Blvd, Santa Monica, CA 90401 </p></h2></b>
+   </div>
+   
+   <div class="card">
+    <img class="marginauto" src="images/AR Instructions ext 3.png" style="max-width: 100%; height: 200px">
+    <img class="marginauto" src="images/AR Instructions ext 4a.png" style="max-width: 100%; height: 350px"> 
+    </style>  
+   </div>
+
+    <div class="card">
+    
+    </div>
+    <br>
+
+     <h3 style="text-align: center;" markdown="1"><a href="https://avertek.net/" onclick="getOutboundLink('https://avertek.net/');
+       return false;"><b style="color:#0081ae;"><p style="font-family:calibri">Learn More About AVERtek's XR-NOW</p></a></h3></b>
+    </div>
+
+
+</div>
+</body>
+</html>
